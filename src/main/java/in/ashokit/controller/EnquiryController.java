@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import in.ashokit.binding.DashBoardResponse;
 import in.ashokit.binding.EnquiryForm;
@@ -98,6 +99,27 @@ public class EnquiryController {
 
 		return "view-enquiries";
 		}
+	
+	//for ajax call data coming to controller or not
+	@GetMapping("/filter-enquiries")
+	public String filterEnquiry(@RequestParam String cname,
+			                   @RequestParam String status,
+			                   @RequestParam  String mode,Model model) {
+		EnquirySearchCriteria criteria= new EnquirySearchCriteria();
+		criteria.setCourseName(cname);
+		criteria.setEnquiryStatus(status);
+		criteria.setClassMode(mode);
+		System.out.println(criteria);
+		
+		Integer userId=(Integer) session.getAttribute("userId");
+		
+		List<StudentEnqEntity> filteredEnqs = 
+				endService.getFilteredEnqs(criteria, userId);
+		
+		model.addAttribute("enquiries", filteredEnqs);
+		
+		return "filter-enquiries-page";
+	}
 
 
 }

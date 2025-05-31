@@ -19,6 +19,8 @@ public interface EnquiryService {
 	
 	public List<StudentEnqEntity> getEnquiries();
 	
+	public List<StudentEnqEntity> getFilteredEnqs(EnquirySearchCriteria criteria,Integer userId);
+	
 	public EnquiryForm getEnquiry(Integer enqId);
 
 }

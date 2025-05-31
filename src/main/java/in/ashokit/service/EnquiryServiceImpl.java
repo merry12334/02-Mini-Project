@@ -119,48 +119,33 @@ public class EnquiryServiceImpl implements EnquiryService {
 
 	@Override
 	public List<StudentEnqEntity> getFilteredEnqs(EnquirySearchCriteria criteria, Integer userId) {
-	    Optional<UserDtlsEntity> findById = userDtlsRepo.findById(userId);
-	    if (findById.isPresent()) {
-	        UserDtlsEntity userDtlsEntity = findById.get();
-	        List<StudentEnqEntity> enquiries = userDtlsEntity.getEnquiries();
+		Optional<UserDtlsEntity> findById = userDtlsRepo.findById(userId);
+		if (findById.isPresent()) {
+			UserDtlsEntity userDtlsEntity = findById.get();
+			List<StudentEnqEntity> enquiries = userDtlsEntity.getEnquiries();
 
-	        if (criteria.getCourseName() != null &&
-	            !criteria.getCourseName().trim().equalsIgnoreCase("-Select-") &&
-	            !criteria.getCourseName().trim().isEmpty()) {
+			// filter logic
+			if (null != criteria.getCourseName() && !"".equals(criteria.getCourseName())) {
 
-	            enquiries = enquiries.stream()
-	                .filter(e -> e.getCourseName() != null &&
-	                             e.getCourseName().trim().equalsIgnoreCase(criteria.getCourseName().trim()))
-	                .collect(Collectors.toList());
-	        }
+				  enquiries = enquiries.stream().filter(e -> e.getCourseName().equals(criteria.getCourseName()))
+						.collect(Collectors.toList());
+			}
+			if (null != criteria.getEnquiryStatus() && !"".equals(criteria.getEnquiryStatus())) {
 
-	        if (criteria.getEnquiryStatus() != null &&
-	            !criteria.getEnquiryStatus().trim().equalsIgnoreCase("-Select-") &&
-	            !criteria.getEnquiryStatus().trim().isEmpty()) {
+				enquiries = enquiries.stream().filter(e -> e.getEnquiryStatus().equals(criteria.getEnquiryStatus()))
+						.collect(Collectors.toList());
+			}
+			if (null != criteria.getClassMode() && !"".equals(criteria.getClassMode())) {
 
-	            enquiries = enquiries.stream()
-	                .filter(e -> e.getEnquiryStatus() != null &&
-	                             e.getEnquiryStatus().trim().equalsIgnoreCase(criteria.getEnquiryStatus().trim()))
-	                .collect(Collectors.toList());
-	        }
+				enquiries = enquiries.stream().filter(e -> e.getClassMode().equals(criteria.getClassMode()))
+						.collect(Collectors.toList());
+			}
 
-	        if (criteria.getClassMode() != null &&
-	            !criteria.getClassMode().trim().equalsIgnoreCase("-Select-") &&
-	            !criteria.getClassMode().trim().isEmpty()) {
+			return enquiries;
+		}
+		return null;
 
-	            enquiries = enquiries.stream()
-	                .filter(e -> e.getClassMode() != null &&
-	                             e.getClassMode().trim().equalsIgnoreCase(criteria.getClassMode().trim()))
-	                .collect(Collectors.toList());
-	        }
-
-	        return enquiries;
-	    }
-
-	    return Collections.emptyList();
-	}
-
-
+	} 
 
 	@Override
 	public EnquiryForm getEnquiry(Integer enqId) {

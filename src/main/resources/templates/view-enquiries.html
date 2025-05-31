@@ -91,7 +91,7 @@ $(document).ready(function() {
 											<label class="form-label" for="cname">Course
 											</label> 
 											<select id="cname" class="form-select">
-												<option>-Select-</option>
+												<option value="">-Select-</option>
 												 <option th:each="course : ${courses}" th:value="${course}" 
                                                          th:text="${course}" >
                                                  </option>
@@ -102,7 +102,7 @@ $(document).ready(function() {
 											<label class="form-label" for="status">Enquiry
 												Status</label>
 									        <select id="status" class="form-select">
-												<option>-Select-</option>
+												<option value="">-Select-</option>
 												 <option th:each="status : ${enqStatus}" th:value="${status}" 
                                                          th:text="${status}" >
                                                  </option>
@@ -114,9 +114,9 @@ $(document).ready(function() {
 											<label class="form-label" for="mode">Class
 												Mode </label> 
 											<select id="mode" class="form-select">
-												  <option>-Select-</option>
-												  <option>Online</option>
-												  <option>Classroom</option>
+												  <option value="">-Select-</option>
+												  <option>online</option>
+												  <option>classroom</option>
 											</select>
 										</div>
 
